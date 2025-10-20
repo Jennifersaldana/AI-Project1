@@ -1,0 +1,15 @@
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore virtual environment
+venv/
+
+# Ignore MNIST dataset
+data/MNIST/
+
+# Ignore system files
+.DS_Store
+
+# Ignore Jupyter notebooks checkpoints (if any)
+.ipynb_checkpoints/
