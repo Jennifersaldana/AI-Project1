@@ -1,6 +1,6 @@
 """
 Convolutional Neural Network (CNN) — PyTorch Implementation
-============================================================
+ChatGPT 5. was used to define the CNN Model
 Requirements:
 - Two convolutional layers with activation + pooling.
 - Example: Conv(1→32, 3×3) → ReLU → MaxPool → Conv(32→64, 3×3) → ReLU → MaxPool → FC → Softmax.
@@ -19,35 +19,45 @@ Define CNN Architecture
 '''
 class SimpleCNN(nn.Module):
     '''
-    A simple convolutional neural network for MNIST classification.
+    Convolutional neural network for MNIST classification.
 
     Architecture:
         Conv(1→32, 3×3) → ReLU → MaxPool
         Conv(32→64, 3×3) → ReLU → MaxPool
         FC (3136→128) → ReLU → FC (128→10)
+
+    It has:
+      - 2 convolutional layers (extract image features)
+      - 2 pooling layers (reduce image size)
+      - 2 fully connected layers (make final predictions)
     '''
     def __init__(self):
         super(SimpleCNN, self).__init__()
 
         # First convolutional block
+        # First convolutional layer: 1 input channel (grayscale) → 32 filters
         self.conv1 = nn.Conv2d(1, 32, 3, padding=1)
         self.relu1 = nn.ReLU()
-        self.pool1 = nn.MaxPool2d(2, 2)
+        self.pool1 = nn.MaxPool2d(2, 2) # reduces size by half (28x28 → 14x14)
 
         # Second convolutional block
+        # Second convolutional layer: 32 → 64 filters
         self.conv2 = nn.Conv2d(32, 64, 3, padding=1)
         self.relu2 = nn.ReLU()
-        self.pool2 = nn.MaxPool2d(2, 2)
+        self.pool2 = nn.MaxPool2d(2, 2) # again reduce by half (14x14 → 7x7)
 
         # Fully connected layers
-        self.fc1 = nn.Linear(64 * 7 * 7, 128)
+        self.fc1 = nn.Linear(64 * 7 * 7, 128) # flatten and connect to 128 neurons
         self.relu3 = nn.ReLU()
-        self.fc2 = nn.Linear(128, 10)
+        self.fc2 = nn.Linear(128, 10) # final output: 10 digits
 
     def forward(self, x):
         '''
         Forward pass through CNN.
         Each convolutional block extracts spatial features.
+        1. Extract features using conv layers
+        2. Flatten the image
+        3. Classify using fully connected layers
         '''
         x = self.pool1(self.relu1(self.conv1(x)))
         x = self.pool2(self.relu2(self.conv2(x)))
@@ -63,37 +73,41 @@ CNN Training and Evaluation
 def cnn_classifier(X_train, X_test, y_train, y_test, epochs=5, batch_size=64, lr=0.01):
     '''
     Trains a CNN on MNIST and returns predictions for confusion matrix.
+    Steps:
+      1. Convert data to tensors
+      2. Create DataLoaders for batching
+      3. Train the CNN for several epochs
+      4. Evaluate and print accuracy
     '''
     print("\n==============================")
     print("Running CNN Classifier (PyTorch)")
     print("==============================")
 
-    # Convert NumPy arrays to PyTorch tensors
+    # Step 1: Convert NumPy arrays to PyTorch tensors
     X_train_tensor = torch.tensor(X_train, dtype=torch.float32)
     X_test_tensor = torch.tensor(X_test, dtype=torch.float32)
     y_train_tensor = torch.tensor(y_train, dtype=torch.long)
     y_test_tensor = torch.tensor(y_test, dtype=torch.long)
 
-    # Create DataLoaders
-    train_loader = DataLoader(TensorDataset(X_train_tensor, y_train_tensor), batch_size=batch_size, shuffle=True)
-    test_loader  = DataLoader(TensorDataset(X_test_tensor, y_test_tensor), batch_size=batch_size, shuffle=False)
+    # Step 2: Create DataLoaders for training/testing
+    train_loader = DataLoader(TensorDataset(X_train_tensor, y_train_tensor), batch_size=batch_size, shuffle=True, num_workers=2)
+    test_loader  = DataLoader(TensorDataset(X_test_tensor, y_test_tensor), batch_size=batch_size, shuffle=False, num_workers=2)
 
-    # Device setup
+    # 3. GPU setup
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    # Model, loss, optimizer
+    # Step 4: Initialize model, loss function, and optimizer
     model = SimpleCNN().to(device)
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(model.parameters(), lr=lr, momentum=0.9)
+    optimizer = optim.SGD(model.parameters(), lr=lr, momentum=0.9, weight_decay=1e-4) # Adds L2 regularization → prevents overfitting
 
     start_time = time.time()
 
-    # --------------------------
-    # Training loop
-    # --------------------------
+    # Training Phase
     for epoch in range(1, epochs + 1):
-        model.train()
+        model.train() # enable training mode
         running_loss = 0.0
+        # loop through mini-batches
         for images, labels in train_loader:
             images, labels = images.to(device), labels.to(device)
 
@@ -106,17 +120,15 @@ def cnn_classifier(X_train, X_test, y_train, y_test, epochs=5, batch_size=64, lr
 
         print(f"Epoch {epoch}/{epochs} | Loss: {running_loss / len(train_loader):.4f}")
 
-    # --------------------------
     # Evaluation phase
-    # --------------------------
-    model.eval()
+    model.eval() # switch to eval mode 
     all_preds = []
     all_labels = []
-    with torch.no_grad():
+    with torch.no_grad(): # no gradient needed for testing
         for images, labels in test_loader:
             images, labels = images.to(device), labels.to(device)
             outputs = model(images)
-            _, preds = torch.max(outputs, 1)
+            _, preds = torch.max(outputs, 1) # pick class with highest score
             all_preds.extend(preds.cpu().numpy())
             all_labels.extend(labels.cpu().numpy())
 
