@@ -82,4 +82,4 @@ def mlp_classifier(X_train, X_test, y_train, y_test, epochs=20, lr=0.01, batch_s
     print(f"\nMLP Accuracy: {accuracy:.4f}")
     print(f"Time taken: {elapsed:.2f}s")
     print("==============================")
-    return accuracy
+    return preds.cpu().numpy()

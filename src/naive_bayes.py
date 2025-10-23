@@ -1,10 +1,13 @@
 """
+Naive Bayes Classifier — NumPy Only
+
 Requirements:
 - Binarize each pixel (1 if pixel > 0.5, else 0).
 - Estimate conditional probabilities of each pixel being “on” given a digit class.
 - Apply Bayes’ rule with the independence assumption.
-
+- Return predictions and conditional probabilities for analysis.
 """
+
 import numpy as np
 import time
 
@@ -29,19 +32,19 @@ def naive_bayes_classifier(X_train, X_test, y_train, y_test):
         X_c = X_train[y_train == c]
         cond_probs[c, :] = (np.sum(X_c, axis=0) + 1) / (X_c.shape[0] + 2)  # Laplace smoothing
 
-    # Compute log probabilities for numerical stability
+    # Compute log probabilities for stability
     log_priors = np.log(class_priors)
     log_cond = np.log(cond_probs)
     log_cond_inv = np.log(1 - cond_probs)
 
-    # Predict
+    # Predict test samples
     y_pred = []
     for x in X_test:
         log_probs = log_priors + np.sum(x * log_cond + (1 - x) * log_cond_inv, axis=1)
         y_pred.append(np.argmax(log_probs))
     y_pred = np.array(y_pred)
 
-    # Accuracy
+    # Compute accuracy
     accuracy = np.mean(y_pred == y_test)
     end_time = time.time()
 
@@ -49,4 +52,5 @@ def naive_bayes_classifier(X_train, X_test, y_train, y_test):
     print(f"Time taken: {end_time - start_time:.2f}s")
     print("==============================\n")
 
-    return accuracy
+    # Return predictions and conditional probabilities
+    return y_pred, cond_probs
