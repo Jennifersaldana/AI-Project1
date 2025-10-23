@@ -39,37 +39,39 @@ def main():
     # Call each classifier
 
     # KNN
-    # y_pred_knn = knn_classifier(*knn_data, k_values=[1, 3, 5])
-    # show_confusion_matrix(knn_data[3], y_pred_knn, "KNN Confusion Matrix")
+    y_pred_knn = knn_classifier(*knn_data, k_values=[1, 3, 5])
+    # Show confusion matrix (Failure mode analysis)
+    show_confusion_matrix(knn_data[3], y_pred_knn, "KNN Confusion Matrix")
 
 
 
     # Naive Bayes
-    # y_pred_nb, nb_cond_probs = naive_bayes_classifier(*nb_data)
+    y_pred_nb, nb_cond_probs = naive_bayes_classifier(*nb_data)
     # Show confusion matrix (Failure mode analysis)
-    # show_confusion_matrix(nb_data[3], y_pred_nb, "Naive Bayes Confusion Matrix")
-    # #Visualize probability map
-    # visualize_naive_bayes_probs(nb_cond_probs)
+    show_confusion_matrix(nb_data[3], y_pred_nb, "Naive Bayes Confusion Matrix")
+    # Visualize probability map
+    visualize_naive_bayes_probs(nb_cond_probs)
 
 
 
     # Linear Classifier
-    # y_pred_linear, W = linear_classifier(*linear_data)
-    # show_confusion_matrix(linear_data[3], y_pred_linear, "Linear Classifier Confusion Matrix")
-    # visualize_linear_weights(W)
+    y_pred_linear, W = linear_classifier(*linear_data)
+    # Show confusion matrix (Failure mode analysis)
+    show_confusion_matrix(linear_data[3], y_pred_linear, "Linear Classifier Confusion Matrix")
+    # Show Linear weights
+    visualize_linear_weights(W)
 
 
 
     # MLP
-    # y_pred_mlp = mlp_classifier(*mlp_data)
-    # Failure Mode Analysis: Confusion Matrix
-    # show_confusion_matrix(mlp_data[3], y_pred_mlp, "MLP Confusion Matrix")
-
-
+    y_pred_mlp = mlp_classifier(*mlp_data)
+    # Show confusion matrix (Failure mode analysis)
+    show_confusion_matrix(mlp_data[3], y_pred_mlp, "MLP Confusion Matrix")
 
 
     #CNN
     y_pred_cnn = cnn_classifier(*cnn_data)
+    # Show confusion matrix (Failure mode analysis)
     show_confusion_matrix(cnn_data[3], y_pred_cnn, "CNN Confusion Matrix")
 
 

@@ -1,16 +1,8 @@
 """
-experimental_analysis.py
-
 Provides utilities for analyzing and visualizing ML model performance.
-
 Includes:
 1. Confusion matrix visualization
-2. Hyperparameter tuning loop
-3. Loss function experimentation (MLP/CNN)
 4. Visualizations for Linear Classifier and Naïve Bayes
-
-Author: Jennifer Saldana
-Date: October 2025
 """
 
 import numpy as np
