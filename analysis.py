@@ -31,15 +31,15 @@ def show_confusion_matrix(y_true, y_pred, title="Confusion Matrix"):
 '''
 4. Visualization Utilities
 '''
-def visualize_linear_weights(W):
+def visualize_linear_weights(weight):
     """
     Visualizes the learned weights of a linear classifier (e.g., 784 x 10 for MNIST).
     Each column of W corresponds to one digit class.
     """
-    fig, axes = plt.subplots(2, 5, figsize=(10, 4))
+    _, axes = plt.subplots(2, 5, figsize=(10, 4))
     for i, ax in enumerate(axes.flat):
         # take column i instead of row i
-        ax.imshow(W[:, i].reshape(28, 28), cmap="coolwarm")
+        ax.imshow(weight[:, i].reshape(28, 28), cmap="coolwarm")
         ax.set_title(f"Digit {i}")
         ax.axis("off")
     plt.suptitle("Weight Visualization for Linear Classifier")
@@ -52,7 +52,7 @@ def visualize_naive_bayes_probs(class_probs):
     Displays the probability map for each class (e.g., Naïve Bayes pixel likelihoods).
     Each image shows which pixels are most likely active for that class.
     """
-    fig, axes = plt.subplots(2, 5, figsize=(10, 4))
+    _, axes = plt.subplots(2, 5, figsize=(10, 4))
     for i, ax in enumerate(axes.flat):
         ax.imshow(class_probs[i].reshape(28, 28), cmap="gray")
         ax.set_title(f"Class {i}")

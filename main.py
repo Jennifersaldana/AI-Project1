@@ -1,5 +1,24 @@
 """
+Main.py: This function prints out details for all classifiers.
+This function prints:
+1. Displays the Train/Test Split for all classifiers datasets.
+With the avaiable info:
+  X_train shape: 
+  X_test shape:
+  y_train shape: 
+  y_test shape: 
+  Total samples: 
+  Train/Test ratio: 
 
+
+2. Displays the confusion matrix for all classifiers (cnn, knn, linear, mlp, naive bayes)
+
+3. Classifier Accuracy and Time
+Returns: Running KNN Classifier -> k= #, Accuracy, Time
+Returns: Naive Bayes Classifier -> Accuracy, Time
+Returns: Linear Classifier -> Epoch #/100, Loss, Accuracy, Time
+Returns: MLP Classifier -> Device, Epoch #/20, Loss, Accuracy, Time
+Returns: CNN Classifier -> Epoch #/5, Loss, Accuracy, Time
 """
 from src.utils import prepare_all_versions
 from src.knn import knn_classifier
@@ -55,11 +74,11 @@ def main():
 
 
     # Linear Classifier
-    y_pred_linear, W = linear_classifier(*linear_data)
+    y_pred_linear, weight = linear_classifier(*linear_data)
     # Show confusion matrix (Failure mode analysis)
     show_confusion_matrix(linear_data[3], y_pred_linear, "Linear Classifier Confusion Matrix")
     # Show Linear weights
-    visualize_linear_weights(W)
+    visualize_linear_weights(weight)
 
 
 
