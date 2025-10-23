@@ -55,6 +55,7 @@ def naive_bayes_classifier(X_train, X_test, y_train, y_test):
     # we then pick the digit (0-9) with the highest porbability
     y_pred = []
     for x in X_test:
+        # independence assumption - ChatGPT helped
         log_probs = log_priors + np.sum(x * log_cond + (1 - x) * log_cond_inv, axis=1)
         y_pred.append(np.argmax(log_probs))
     y_pred = np.array(y_pred)
