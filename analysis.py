@@ -1,4 +1,5 @@
 """
+ChatGPT was used for the creation of show_confusion_matrix(), visualize_naive_bayes_probs(), and visualize_linear_weights()
 Provides utilities for analyzing and visualizing ML model performance.
 Includes:
 1. Confusion matrix visualization
