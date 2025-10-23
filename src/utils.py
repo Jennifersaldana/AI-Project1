@@ -1,4 +1,6 @@
 """
+ChatGPT was used to figure out how to preprocess an image. 
+Code created for flatten_images(), binarize_images(), create_train_test() was created. 
 Preprocessing:
 - Normalize pixel values to [0,1] (NumPy) or [-1,1] (PyTorch with transforms.Normalize).
 - Flatten into vectors (784 features) when needed.
