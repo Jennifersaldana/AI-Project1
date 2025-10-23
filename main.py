@@ -3,10 +3,10 @@ Main.py: This function prints out details for all classifiers.
 This function prints:
 1. Displays the Train/Test Split for all classifiers datasets.
 With the avaiable info:
-  X_train shape: 
-  X_test shape:
-  y_train shape: 
-  y_test shape: 
+  X_train shape: (48000, 784) -> 48,000 images, each with 784 pixels
+  X_test shape: (12000, 784) -> 12,000 images, each with 784 pixels
+  y_train shape: (48000,) -> one label (0–9) per image
+  y_test shape: (12000,) -> 12,000 images, no class
   Total samples: 
   Train/Test ratio: 
 
